@@ -1,15 +1,27 @@
-# Run Requirements
+# 项目描述
+本项目是用于模拟服务商如何通过Agent以及Listener与BCOS区块链进行交互
+
+# 项目部署注意事项
+
+## 项目依赖
+### Run Requirements
 - python3
 - pip3
 
 
-# Install Python Requirements
+### Install Python Requirements
 ```bash
 pip3 install -r requirements.txt 
 ```
 
-# Config
-服务商配置文件`provider.json`设置,  json 样例：
+## 项目配置
+
+#### 其他项目的配置
+`mock-interact`中的`moduleUrl`固定是`/api/v1/recoverdata/`,
+`listener`里面的配置应该是这个值
+
+#### 服务商配置文件`provider.json`
+json 样例：
 ```json
 [
   {
@@ -22,46 +34,28 @@ pip3 install -r requirements.txt
   }
 ]
 ```
+需要根据实际情况来配置
 
-模拟服务配置文件`config.ini`设置： 
+#### 模拟服务配置文件`config.ini`
+具体的内容可以到项目里面去看，主要需要修改的部分有
 ```ini
-# 开发测试服务
 [mock-service]
 port: 8001
-# 服务商配置 json 文件路径
-provider: provider.json
-
-# parcel-no 过滤条件
-[parcel-no]
-# 创建包裹轨迹 所对应监控的 url 子路径
-upload-parcel-path: /parcel/upload
-# 创建包裹轨迹 parcelNo 起始字符串过滤条件
-startswith:
-# 创建包裹轨迹 parcelNo 包含字符串过滤条件
-contains:
-# 创建包裹轨迹所在最低区块设置
-min-block-number: 0
-
-# 模拟包裹轨迹路径任务
-[task]
-# 任务名
-id: mockParcelTrack
-# 任务间隔时间
-seconds: 15
-# 任务下包裹该次调用是否执行概率 0 ~ 100. 例如80: 包裹轨迹更新该次有80%执行概率
-ratio: 80
-
+```
+这个端口是`app`暴露给外面的`api`端口
+```ini
 [bcos-agent]
 # mock服务地址
-sync-chain-url: http://127.0.0.1:8080/api/v1/fabricData/add
-# 是否推送
-post: false
+sync-chain-url: http://bcos-agent/api/v1/parcelx/bcosagent/add
 
 # api 配置上链信息
 groupId: 1
 ```
+`sync-chain-url`是`agent`的上传待缓存数据的接口
+`groupId`是对应组织的groupId
 
-# Run
+
+### Run
 ```bash
 python mock-web.py
 ```
