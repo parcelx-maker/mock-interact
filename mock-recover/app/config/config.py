@@ -24,8 +24,8 @@ def loadConfig(filepath):
     config.read(filepath)
     return {
         "mock-service": {
-            "host": config.get("mock-service", "host"),
-            "port": config.get("mock-service", "port"),
+            "host": os.environ["BCOS_AGENT_HOST"] if "BCOS_AGENT_HOST" in os.environ else config.get("mock-service", "host"),
+            "port": os.environ["APP_PORT"] if "APP_PORT" in os.environ else config.get("mock-service", "port"),
             "provider": config.get("mock-service", "provider"),
             "route": config.get("mock-service", "route")
         },
@@ -47,7 +47,7 @@ def loadConfig(filepath):
                 "sync-chain-url"),
             "post": True if config.has_option("bcos-agent", "post") and config.get("bcos-agent",
                                                                                      "post") == "true" else False,
-            "groupId": os.environ["BCOS_AGENT_GROUPID"] if "BCOS_AGENT_ADD_URL" in os.environ else config.get("bcos-agent",
+            "groupId": os.environ["BCOS_AGENT_GROUPID"] if "BCOS_AGENT_GROUPID" in os.environ else config.get("bcos-agent",
                                                                                                               "groupId"),
         }
     }
