@@ -52,7 +52,7 @@ sync-chain-url: http://bcos-agent/api/v1/parcelx/bcosagent/add
 groupId: 1
 ```
 `sync-chain-url`是`agent`的上传待缓存数据的接口
-`groupId`是对应组织的groupId
+`groupId`相当于在`fabric`中的`channel`, 为了简单起见，只使用第一个group，设值为`1`
 
 
 ### Run
