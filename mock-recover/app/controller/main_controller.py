@@ -11,12 +11,14 @@
 import json
 from datetime import datetime
 
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint
 
 from app.app import app
 from app.config.config import RouteIDs, mockConfig, randomAccountInfo
 from app.scheduler.tasks import randomNumberChar, parcelOperateNames, currentTime, currentTimeStamp, randomLocation
 from app.store.sqlitedb import ParcelTrack, db
+
+recover_controller = Blueprint('recover_controller', __name__)
 
 def get_tx_info(header):
     return {
@@ -103,7 +105,7 @@ def random_parcel_track(parcel_no):
     }
 
 
-@app.route('/api/v1/recoverdata/<path:subpath>', methods=['POST'])
+@recover_controller.route('/api/v1/recoverdata/<path:subpath>', methods=['POST'])
 def recover_api(subpath):
     if not request.is_json:
         app.logger.warning("http request data is not json! %s",
