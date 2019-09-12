@@ -107,13 +107,15 @@ def random_parcel_track(parcel_no):
 
 @recover_controller.route('/api/v1/recoverdata/<path:subpath>', methods=['POST'])
 def recover_api(subpath):
-    if not request.is_json:
+    request_body_data = request.get_data().decode('utf-8')
+    try:
+        data = json.loads(request_body_data)
+    except ValueError as e:
         app.logger.warning("http request data is not json! %s",
-                           json.dumps({"path": request.path, "data": request.get_data()}, indent=4))
+                           json.dumps({"path": request.path, "data": request.get_data().decode('utf-8')}, indent=4))
         return jsonify({'status': 'true'})
 
     tx_info = get_tx_info(request.headers)
-    data = request.get_json()
 
     # 对包裹上传通知接口进行获取相应包裹ParcelNo, 并创建包裹轨迹.
     if "/%s" % subpath == mockConfig["parcel-no"]["upload-parcel-path"]:
